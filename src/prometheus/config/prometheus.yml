@@ -31,6 +31,7 @@ scrape_configs:
         - https://prometheus.io   # Target to probe with https.
         - http://example.com:8080 # Target to probe with http on port 8080.
         - https://google.com
+        - https://monitoring.bskyb.com/
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target

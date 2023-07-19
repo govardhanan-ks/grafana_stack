@@ -36,11 +36,11 @@ services:
       - my-network
 
   grafana:
-    image: grafana/grafana:8.2.1
+    image: grafana/grafana:latest
     user: "0"
     container_name: grafana
     volumes:
-      - ./grafana/config:/etc/grafana
+      #- ./grafana/config:/etc/grafana
       - ./grafana/data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning
     ports:
@@ -68,15 +68,30 @@ services:
     user: "0"
     container_name: blackbox
     volumes:
-        - ./blackbox/config/blackbox.yml:/etc/blackbox/blackbox.yml
-    command: --config.file=/etc/blackbox/blackbox.yml
+      - ./blackbox/config/blackbox.yml:/etc/blackbox/blackbox.yml
+    command: 
+      - --config.file=/etc/blackbox/blackbox.yml
     ports:
       - "9115:9115"
     restart: on-failure
     networks:
       - my-network
+
+  vector:
+    image: timberio/vector:0.31.0-debian
+    user: "0"
+    container_name: vector
+    env_file:
+      - ./vector/config/.env
+    volumes:
+      - ./vector/config/:/etc/vector/
+    ports:
+      - "8686:8686"
+    restart: on-failure
+    networks:
+      - my-network    
 networks:
   my-network:
-    driver: bridge 
+    driver: bridge
     name: my-network
 

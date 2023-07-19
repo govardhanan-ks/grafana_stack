@@ -1,0 +1,17 @@
+{
+	"ulid": "01H5PC74DPX8GMCH8WAX1NKP74",
+	"minTime": 1689736098325,
+	"maxTime": 1689739200000,
+	"stats": {
+		"numSamples": 118,
+		"numSeries": 118,
+		"numChunks": 118
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01H5PC74DPX8GMCH8WAX1NKP74"
+		]
+	},
+	"version": 1
+}

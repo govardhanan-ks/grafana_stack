@@ -1,0 +1,28 @@
+[sources.ssl_prom]
+type = "prometheus_scrape"
+endpoints = [ "http://prometheus:9090/prometheus/federate" ]
+scrape_interval_secs = 15
+
+  [sources.ssl_prom.query]
+  "match[]" = [ "{job=\"blackbox\"}" ]
+
+[transforms.relabel_default]
+type = "remap"
+inputs = [ "ssl_prom" ]
+source = """
+.tags.sky_tenant = "DE Monitoring"
+.tags.sky_spark_group = "DE Monitoring"
+.tags.sky_service = "DE SSL"
+"""
+
+[sinks.grafana]
+type = "prometheus_remote_write"
+inputs = [ "relabel_default" ]
+endpoint = "${GRAFANA_PUSH_ENDPOINT}"
+auth.strategy = "basic"
+auth.user = "${GRAFANA_USER}"
+auth.password = "${GRAFANA_PWD}"
+healthcheck.enabled = false
+
+[api]
+  enabled = true
